@@ -56,7 +56,7 @@ fixée à 30% pour tous les employés</panel_attributes>
       <w>216</w>
       <h>225</h>
     </coordinates>
-    <panel_attributes>Employee
+    <panel_attributes>Employee2
 --
 - registrationNumber: String
 - lastName: String
@@ -71,7 +71,7 @@ fixée à 30% pour tous les employés</panel_attributes>
 + toString(): String
 + getFullName(): String
 + netSalary(): double
-+ daysBeforeBirthday: int</panel_attributes>
++ daysBeforeBirthday(): int</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

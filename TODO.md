@@ -1,13 +1,15 @@
 # TODO
 
 ## MVP
-* parse uxf
-* create class
-* create class attributes
-* create class methods
-* create class getters & setters
+* ~~parse uxf~~
+* ~~create class~~
+* ~~create class attributes~~
+* ~~create class methods~~
+* ~~create class getters & setters~~
+* ~~create multiple classes at once~~
+* add args for methods
+* new class with attributes : name, methods, attributes : getters of these with format
 * create project
-* create multiple classes at once
 * create rel attributes (cardinality)
 
 ## Advanced

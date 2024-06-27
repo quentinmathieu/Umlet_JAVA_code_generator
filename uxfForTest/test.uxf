@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>180</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Test
+--
+-id: Long
+-ClassAttribute: Long
+--
+Operation(i: int): int
+AbstractOperation()
+--
+Responsibilities
+-- Resp1
+*-- Resp2*</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
