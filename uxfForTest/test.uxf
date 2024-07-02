@@ -14,8 +14,8 @@
 -id: Long
 -ClassAttribute: Long
 --
-Operation(i: int): int
-AbstractOperation()
++Operation(i: int, j: String): int
++AbstractOperation(): Long
 --
 Responsibilities
 -- Resp1

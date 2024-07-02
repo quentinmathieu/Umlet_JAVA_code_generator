@@ -37,13 +37,8 @@ class UxfParser
 		this.parsedFile = parsedFile;
 	}
 
-	public UxfParser(String parsedFile) {
-		try {
-			this.parsedFile = this.parseFile(parsedFile);
-
-		} catch (Exception e) {
-			System.out.println(e);	
-		}
+	public UxfParser(String parsedFile) throws IOException, ParserConfigurationException, SAXException {
+			this.parsedFile = parseFile(parsedFile);
 	}
 
 
@@ -54,18 +49,19 @@ class UxfParser
 		if ("panel_attributes".equals(node.getNodeName()) && node.getTextContent().toString().contains("--")){
 			String[] arrayContent = node.getTextContent().toString().replace("\n", "").split("--");
 			String name = arrayContent[0];
-			String[] attributes = arrayContent[1].toString().split("-");
-			String[] methods = arrayContent[2].toString().split("- ");
-			methods = methods[0].split("\\+");
+			// String[] attributes = arrayContent[1].toString().split("-");
+			// String[] methods = arrayContent[2].toString().split("- ");
+			// methods = methods[0].split("\\+");
+			Class classToCreate = new Class(arrayContent[0], arrayContent[1].toString(), arrayContent[2].toString());
+			System.out.println(classToCreate);
 			String newClassContent = "class "+name+"{\n";
-			newClassContent += createAttributes(attributes);
-			newClassContent += createMethods(methods);
-			newClassContent += createConstruct(attributes, name);
-			newClassContent += createGettersAndSetters(attributes);
+			newClassContent += classToCreate.createAttributes();
+			newClassContent += classToCreate.createMethods();
+			// newClassContent += classToCreate.createConstruct(attributes, name);
+			// newClassContent += classToCreate.createGettersAndSetters(attributes);
 
 			newClassContent += "}\n";
 			createOrEditFile(name+".java", newClassContent);
-			
 		}
 
 		NodeList nodeList = node.getChildNodes();
@@ -148,7 +144,7 @@ class UxfParser
 			if (myObj.createNewFile()) {
 				System.out.println("File created: " + myObj.getName());
 				} else {
-				System.out.println("File already exists.");
+				System.out.println("File updated: " + myObj.getName());
 				}
 				
 				FileWriter myWriter = new FileWriter(name);
@@ -173,7 +169,7 @@ class UxfParser
 		return showClasses();
 	}
 
-	public Document parseFile(String fileName) throws  IOException, ParserConfigurationException, SAXException {
+	public Document parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
 
     DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
