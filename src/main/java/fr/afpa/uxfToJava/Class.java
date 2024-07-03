@@ -10,6 +10,10 @@ class Class
 	private ArrayList<MethodStructure> methods= new ArrayList<>();
  	private Map<String, String> attributesNameType = new HashMap<>();
 
+	public Class(){
+		this.name = "Test";
+	}
+
 	public Class(String name, String attributes,String methods) {
 		this.name = this.normalizeString(name);
 		this.methods = this.parseMethods(methods);
@@ -33,12 +37,14 @@ class Class
 	}
 
 	private ArrayList<MethodStructure> parseMethods(String methodsString){
+		// Split the string to reveal each methods
 		String[] methodsArray = methodsString.split("\\+");
 		ArrayList<MethodStructure> localMethods = new ArrayList<>();
 		for(String method : methodsArray){
 			String[] arrayMethod = method.split(":");
 			String type = arrayMethod[arrayMethod.length-1];
 			
+			//  Check if the method has arguments
 			if (arrayMethod.length > 2 ){
 				Map<String, String> arguments = new HashMap<>();
 				String methodName = arrayMethod[0].split("\\(")[0];
@@ -53,6 +59,7 @@ class Class
 				MethodStructure methodStructure = new MethodStructure(methodName,type, arguments);
 				localMethods.add(methodStructure);
 			}
+			// Check the methods's type (void included)
 			else if (arrayMethod.length > 1 ){
 				String methodName = arrayMethod[0].split("\\(")[0];
 				methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
@@ -133,11 +140,36 @@ class Class
 		return result.toString();
 	}
 
+	public String createConstruct(){
+		StringBuilder result = new StringBuilder();
+
+		// create construct arguments
+		result.append("\n\t//--------------construct--------------\\\\\n\tpublic "+ name + " (");
+		for(var attribute : this.attributesNameType.entrySet()){
+			result.append(attribute.getValue()+ " " +attribute.getKey() + ", ");
+			
+		}
+
+		// remove the ", " for the last arg
+		result = new StringBuilder(result.toString().substring(0, result.length() - 2));
+		result.append("){\n");
+
+		// affect value to each attributes
+		for(var attribute : this.attributesNameType.entrySet()){
+			
+				result.append("\t\tthis." +attribute.getKey().replace(" ", "") + " = "+ attribute.getKey() + ";\n");
+		}
+
+		result.append("\t}\n");
+		return result.toString();
+	}
+
 	public String normalizeString(String str){
 		return normalizeString(str, true, true, true, true, true);
 	}
 
-	public String normalizeString(String str, boolean whiteSpace, boolean lineBreak, boolean slash, boolean underscore, boolean tab){
+	// remove (or not) whiteSpaces, lineBreaks, slashs, underscore, tabs
+	public static String normalizeString(String str, boolean whiteSpace, boolean lineBreak, boolean slash, boolean underscore, boolean tab){
 		str = (whiteSpace) ? str.replace(" ", "") : str;
 		str = (lineBreak) ? str.replace("\n", "") : str;
 		str = (slash) ? str.replace("/", "") : str;

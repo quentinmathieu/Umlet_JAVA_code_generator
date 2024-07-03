@@ -53,7 +53,7 @@ class UxfParser
 			String newClassContent = "class "+name+"{\n";
 			newClassContent += classToCreate.createAttributes();
 			newClassContent += classToCreate.createMethods();
-			// newClassContent += classToCreate.createConstruct(attributes, name);
+			newClassContent += classToCreate.createConstruct();
 			// newClassContent += classToCreate.createGettersAndSetters(attributes);
 
 			newClassContent += "}\n";
