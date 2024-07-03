@@ -1,6 +1,6 @@
-package fr.afpa.uxfToJava;
+package fr.afpa.uxftojava;
 
-import java.util.HashMap;
+
 import java.util.Map;
 
 class MethodStructure

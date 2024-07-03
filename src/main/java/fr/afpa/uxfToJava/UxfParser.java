@@ -1,9 +1,9 @@
-package fr.afpa.uxfToJava;
+package fr.afpa.uxftojava;
 
 import java.io.File;  // Import the File class
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,13 +19,13 @@ import org.xml.sax.SAXException;
 class UxfParser
 {
 	private Document parsedFile;
-	private Vector<Class> classes = new Vector<Class>();
+	private ArrayList<Class> classes = new ArrayList<>();
 
-	public Vector getc() {
+	public ArrayList<Class> getClasses() {
 		return this.classes;
 	}
 
-	public void setClasses(Vector classes) {
+	public void setClasses(ArrayList<Class> classes) {
 		this.classes = classes;
 	}
 
@@ -46,14 +46,10 @@ class UxfParser
     // create each class 
 	public void createClass(Node node) {
 		
-		if ("panel_attributes".equals(node.getNodeName()) && node.getTextContent().toString().contains("--")){
-			String[] arrayContent = node.getTextContent().toString().replace("\n", "").split("--");
+		if ("panel_attributes".equals(node.getNodeName()) && node.getTextContent().contains("--")){
+			String[] arrayContent = node.getTextContent().replace("\n", "").split("--");
 			String name = arrayContent[0];
-			// String[] attributes = arrayContent[1].toString().split("-");
-			// String[] methods = arrayContent[2].toString().split("- ");
-			// methods = methods[0].split("\\+");
-			Class classToCreate = new Class(arrayContent[0], arrayContent[1].toString(), arrayContent[2].toString());
-			System.out.println(classToCreate);
+			Class classToCreate = new Class(arrayContent[0], arrayContent[1], arrayContent[2]);
 			String newClassContent = "class "+name+"{\n";
 			newClassContent += classToCreate.createAttributes();
 			newClassContent += classToCreate.createMethods();

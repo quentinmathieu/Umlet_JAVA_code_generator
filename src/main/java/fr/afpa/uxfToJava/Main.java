@@ -1,8 +1,6 @@
-package fr.afpa.uxfToJava;
+package fr.afpa.uxftojava;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -16,7 +14,7 @@ class Main
 		System.out.println("\n----- UXF parser -----");
 		
 		
-		UxfParser parsedUxf = new UxfParser("uxfForTest/test.uxf");
+		new UxfParser("uxfForTest/test.uxf");
 	}
 }
 

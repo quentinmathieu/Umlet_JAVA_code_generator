@@ -1,8 +1,5 @@
-package fr.afpa.uxfToJava;
+package fr.afpa.uxftojava;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +7,8 @@ import java.util.Map;
 class Class
 {
 	private String name;
-	private ArrayList<MethodStructure> methods= new ArrayList<MethodStructure>();
- 	private Map<String, String> attributesNameType = new HashMap<String, String>();
+	private ArrayList<MethodStructure> methods= new ArrayList<>();
+ 	private Map<String, String> attributesNameType = new HashMap<>();
 
 	public Class(String name, String attributes,String methods) {
 		this.name = name.replace(" ", "");
@@ -22,11 +19,13 @@ class Class
 	// Parse the arguments string to an asssociative array name=>type
 	private Map<String, String> parseAttributes(String attributesString){
 		String[] attributesArray = attributesString.split("-");
-		Map<String, String> attributes = new HashMap<String, String>();
+		Map<String, String> attributes = new HashMap<>();
 		for(String attribute : attributesArray){
 			String[] arrayAttribute = attribute.split(":");
 			if (arrayAttribute.length > 1 ){
-				attributes.put(arrayAttribute[0].replace("\n", "") ,arrayAttribute[1]);
+				String attributeName = arrayAttribute[0].replace("\n", "").replace(" ", "");
+				attributeName = attributeName.substring(0, 1).toLowerCase() + attributeName.substring(1);
+				attributes.put(attributeName , arrayAttribute[1].replace("\n", "").replace(" ", ""));
 			}
 		}
 
@@ -35,31 +34,34 @@ class Class
 
 	private ArrayList<MethodStructure> parseMethods(String methodsString){
 		String[] methodsArray = methodsString.split("\\+");
-		ArrayList<MethodStructure> methods = new ArrayList<MethodStructure>();
+		ArrayList<MethodStructure> localMethods = new ArrayList<>();
 		for(String method : methodsArray){
 			String[] arrayMethod = method.split(":");
 			String type = arrayMethod[arrayMethod.length-1];
+			
 			if (arrayMethod.length > 2 ){
-				Map<String, String> arguments = new HashMap<String, String>();
-				String name = arrayMethod[0].toString().split("\\(")[0];
-
+				Map<String, String> arguments = new HashMap<>();
+				String methodName = arrayMethod[0].split("\\(")[0];
+				methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
 				// get before and after the type
 				String[] args = method.split("\\)")[0].split("\\(")[1].split(",");
 				for (String arg : args){
-					String argName = arg.split(":")[0];
-					String argType = arg.split(":")[1];
+					String argName = arg.split(":")[0].replace(" ", "");
+					String argType = arg.split(":")[1].replace(" ", "");
 					arguments.put(argName,argType);
 				}
-				MethodStructure methodStructure = new MethodStructure(name,type, arguments);
-				methods.add(methodStructure);
+				MethodStructure methodStructure = new MethodStructure(methodName,type, arguments);
+				localMethods.add(methodStructure);
 			}
 			else if (arrayMethod.length > 1 ){
-				MethodStructure methodStructure = new MethodStructure(arrayMethod[0],arrayMethod[1], new HashMap<String, String>());
-				methods.add(methodStructure);
+				String methodName = arrayMethod[0].split("\\(")[0];
+				methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
+				MethodStructure methodStructure = new MethodStructure(methodName,arrayMethod[1], new HashMap<>());
+				localMethods.add(methodStructure);
 			}
 		}
 
-		return methods;
+		return localMethods;
 	}
 
 	public String getName() {
@@ -97,27 +99,37 @@ class Class
 	}
 
 	public String createAttributes(){
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for(var attributeNameType : this.attributesNameType.entrySet()){
-				result += "\tprivate"+ attributeNameType.getValue().replace("\n", "") +" "+attributeNameType.getKey()+";\n";
+				result.append("\tprivate "+ attributeNameType.getValue() +" "+attributeNameType.getKey()+";\n");
+
+				
 		}
-		System.out.println(result);
-		return result;
+		return result.toString();
 	}
 	
 
 	//  create all the methods
 	public String createMethods(){
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for(MethodStructure method : this.methods){
-				String args = "";
+				StringBuilder args = new StringBuilder();
 				if (method.getArgumentsNameType().size()>0){
-					args += "(";
-					args += ")";
+					args .append("(");
+					int count = 0;
+					for (var argNameType : method.getArgumentsNameType().entrySet()){
+						String begin = (count==0) ? "" : ", ";
+						args.append(begin + argNameType.getValue()+ " " + argNameType.getKey());
+						count++;
+					}
+					args .append(")");
 				}
-				result += "\n\tpublic "+ method.getType().replace("\n", "") +" "+method.getName()+ args +"{\n\t}\n";
+				else{
+					args.append("()");
+				}
+				result.append("\n\tpublic "+ method.getType().replace("\n", "") +" "+method.getName()+ args +"{\n\t}\n");
 		}
-		return result;
+		return result.toString();
 	}
 
 }
