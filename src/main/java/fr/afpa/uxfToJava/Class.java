@@ -106,6 +106,15 @@ class Class
 			"}";
 	}
 
+	public String createGettersAndSetters(){
+		StringBuilder result = new StringBuilder("\n\t//--------------getters & setters--------------\\\\\n");
+		for(var attribute : this.attributesNameType.entrySet()){
+			result.append("\tprivate "+attribute.getValue()+" get" + Class.toPascalCase(attribute.getKey()) + "(){\n\t\t return this."+attribute.getKey()+";\n\t}\n\n");
+			result.append("\tprivate void set" + Class.toPascalCase(attribute.getKey()) + " (" +attribute.getValue()+ " " +attribute.getKey() +"){\n\t\tthis."+attribute.getKey()+" = "+attribute.getKey()+";\n\t}\n\n");
+		}
+		return result.toString();
+	}
+
 	public String createAttributes(){
 		StringBuilder result = new StringBuilder();
 		for(var attributeNameType : this.attributesNameType.entrySet()){
@@ -176,6 +185,10 @@ class Class
 		str = (underscore) ? str.replace("_", "") : str;
 		str = (tab) ? str.replace("\t", "") : str;
 		return str;
+	}
+
+	public static String toPascalCase(String str){
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 
 }
