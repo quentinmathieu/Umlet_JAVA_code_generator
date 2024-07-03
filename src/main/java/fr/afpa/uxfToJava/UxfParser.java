@@ -47,17 +47,16 @@ class UxfParser
 	public void createClass(Node node) {
 		
 		if ("panel_attributes".equals(node.getNodeName()) && node.getTextContent().contains("--")){
-			String[] arrayContent = node.getTextContent().replace("\n", "").split("--");
-			String name = arrayContent[0];
-			Class classToCreate = new Class(arrayContent[0], arrayContent[1], arrayContent[2]);
-			String newClassContent = "class "+name+"{\n";
+			String[] arrayContent = node.getTextContent().split("--");
+			Class classToCreate = new Class(arrayContent[0], arrayContent[1], arrayContent[2], this);
+			String newClassContent = "class "+classToCreate.getName()+"{\n";
 			newClassContent += classToCreate.createAttributes();
 			newClassContent += classToCreate.createConstruct();
 			newClassContent += classToCreate.createGettersAndSetters();
 			newClassContent += classToCreate.createMethods();
 
 			newClassContent += "}\n";
-			createOrEditFile(name+".java", newClassContent);
+			createOrEditFile(classToCreate.getName()+".java", newClassContent);
 		}
 
 		NodeList nodeList = node.getChildNodes();
@@ -90,23 +89,18 @@ class UxfParser
 	}
 
 
-	public String showClasses(){
-		return this.classes.toString();
-	}
-	
-
 	@Override
 	public String toString() {
-		return showClasses();
+		return this.classes.toString();
 	}
 
 	public Document parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
 
-    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-	Document document = docBuilder.parse(new File(fileName));
-	this.createClass(document.getDocumentElement());
-    return document;	
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+		Document document = docBuilder.parse(new File(fileName));
+		this.createClass(document.getDocumentElement());
+    	return document;	
 	}
 
 }

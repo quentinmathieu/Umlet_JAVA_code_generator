@@ -20,7 +20,7 @@ public class MainTest
     @Test
     public void normalizeString()
     {
-        assertEquals("Testaaa", Class.normalizeString("_/Test     \t\naaa/_", true, true, true, true, true));    
+        assertEquals("Testaaa", Class.normalizeString("_/Test     \t\na+aa/_", true, true, true, true, true, true));    
     }
 
 }

@@ -8,16 +8,27 @@ class Class
 {
 	private String name;
 	private ArrayList<MethodStructure> methods= new ArrayList<>();
- 	private Map<String, String> attributesNameType = new HashMap<>();
+	private Map<String, String> attributesNameType = new HashMap<>();
+	private UxfParser uxfParser;
+
+	public UxfParser getUxfParser() {
+		return this.uxfParser;
+	}
+
+	public void setUxfParser(UxfParser uxfParser) {
+		this.uxfParser = uxfParser;
+	}
 
 	public Class(){
 		this.name = "Test";
 	}
 
-	public Class(String name, String attributes,String methods) {
+	public Class(String name, String attributes,String methods, UxfParser uxfParser) {
 		this.name = this.normalizeString(name);
 		this.methods = this.parseMethods(methods);
 		this.attributesNameType = this.parseAttributes(attributes);
+		this.uxfParser = uxfParser;
+		uxfParser.getClasses().add(this);
 	}
 
 	// Parse the arguments string to an asssociative array name=>type
@@ -37,8 +48,10 @@ class Class
 	}
 
 	private ArrayList<MethodStructure> parseMethods(String methodsString){
+		methodsString = Class.normalizeString(methodsString, true, false, true, true, true, true);
 		// Split the string to reveal each methods
-		String[] methodsArray = methodsString.split("\\+");
+		String[] methodsArray = methodsString.split("\n");
+		System.out.println(methodsArray[2]);
 		ArrayList<MethodStructure> localMethods = new ArrayList<>();
 		for(String method : methodsArray){
 			String[] arrayMethod = method.split(":");
@@ -174,16 +187,17 @@ class Class
 	}
 
 	public String normalizeString(String str){
-		return normalizeString(str, true, true, true, true, true);
+		return normalizeString(str, true, true, true, true, true, true);
 	}
 
 	// remove (or not) whiteSpaces, lineBreaks, slashs, underscore, tabs
-	public static String normalizeString(String str, boolean whiteSpace, boolean lineBreak, boolean slash, boolean underscore, boolean tab){
+	public static String normalizeString(String str, boolean whiteSpace, boolean lineBreak, boolean slash, boolean underscore, boolean tab, boolean plus){
 		str = (whiteSpace) ? str.replace(" ", "") : str;
 		str = (lineBreak) ? str.replace("\n", "") : str;
 		str = (slash) ? str.replace("/", "") : str;
 		str = (underscore) ? str.replace("_", "") : str;
 		str = (tab) ? str.replace("\t", "") : str;
+		str = (plus) ? str.replace("+", "") : str;
 		return str;
 	}
 
