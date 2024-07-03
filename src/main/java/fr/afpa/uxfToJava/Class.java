@@ -11,7 +11,7 @@ class Class
  	private Map<String, String> attributesNameType = new HashMap<>();
 
 	public Class(String name, String attributes,String methods) {
-		this.name = name.replace(" ", "");
+		this.name = this.normalizeString(name);
 		this.methods = this.parseMethods(methods);
 		this.attributesNameType = this.parseAttributes(attributes);
 	}
@@ -23,9 +23,9 @@ class Class
 		for(String attribute : attributesArray){
 			String[] arrayAttribute = attribute.split(":");
 			if (arrayAttribute.length > 1 ){
-				String attributeName = arrayAttribute[0].replace("\n", "").replace(" ", "");
+				String attributeName = this.normalizeString(arrayAttribute[0]);
 				attributeName = attributeName.substring(0, 1).toLowerCase() + attributeName.substring(1);
-				attributes.put(attributeName , arrayAttribute[1].replace("\n", "").replace(" ", ""));
+				attributes.put(attributeName , this.normalizeString(arrayAttribute[1]));
 			}
 		}
 
@@ -46,8 +46,8 @@ class Class
 				// get before and after the type
 				String[] args = method.split("\\)")[0].split("\\(")[1].split(",");
 				for (String arg : args){
-					String argName = arg.split(":")[0].replace(" ", "");
-					String argType = arg.split(":")[1].replace(" ", "");
+					String argName = this.normalizeString(arg.split(":")[0]);
+					String argType = this.normalizeString(arg.split(":")[1]);
 					arguments.put(argName,argType);
 				}
 				MethodStructure methodStructure = new MethodStructure(methodName,type, arguments);
@@ -56,6 +56,7 @@ class Class
 			else if (arrayMethod.length > 1 ){
 				String methodName = arrayMethod[0].split("\\(")[0];
 				methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
+				methodName = this.normalizeString(methodName);
 				MethodStructure methodStructure = new MethodStructure(methodName,arrayMethod[1], new HashMap<>());
 				localMethods.add(methodStructure);
 			}
@@ -127,9 +128,22 @@ class Class
 				else{
 					args.append("()");
 				}
-				result.append("\n\tpublic "+ method.getType().replace("\n", "") +" "+method.getName()+ args +"{\n\t}\n");
+				result.append("\n\tpublic "+ method.getType() +" "+method.getName()+ args +"{\n\t}\n");
 		}
 		return result.toString();
+	}
+
+	public String normalizeString(String str){
+		return normalizeString(str, true, true, true, true, true);
+	}
+
+	public String normalizeString(String str, boolean whiteSpace, boolean lineBreak, boolean slash, boolean underscore, boolean tab){
+		str = (whiteSpace) ? str.replace(" ", "") : str;
+		str = (lineBreak) ? str.replace("\n", "") : str;
+		str = (slash) ? str.replace("/", "") : str;
+		str = (underscore) ? str.replace("_", "") : str;
+		str = (tab) ? str.replace("\t", "") : str;
+		return str;
 	}
 
 }
