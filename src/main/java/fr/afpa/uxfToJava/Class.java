@@ -10,6 +10,11 @@ class Class
 	private ArrayList<MethodStructure> methods= new ArrayList<>();
 	private Map<String, String> attributesNameType = new HashMap<>();
 	private UxfParser uxfParser;
+	private Integer xPos;
+	private Integer yPos;
+	private Integer width;
+	private Integer height;
+
 
 	public UxfParser getUxfParser() {
 		return this.uxfParser;
@@ -23,12 +28,26 @@ class Class
 		this.name = "Test";
 	}
 
-	public Class(String name, String attributes,String methods, UxfParser uxfParser) {
+	public Class(String name, String attributes,String methods, UxfParser uxfParser, String coordinatesString) {
 		this.name = this.normalizeString(name);
 		this.methods = this.parseMethods(methods);
 		this.attributesNameType = this.parseAttributes(attributes);
 		this.uxfParser = uxfParser;
+		this.parseCoordinates(coordinatesString);
 		uxfParser.getClasses().add(this);
+	}
+
+	private boolean parseCoordinates(String coordinatesString){
+
+		String[] localCoordinates = coordinatesString.replace(" ", "").split("\n");
+
+		this.xPos = Integer.parseInt(localCoordinates[1]);
+		this.yPos = Integer.parseInt(localCoordinates[2]);
+		this.width = Integer.parseInt(localCoordinates[3]);
+		this.height= Integer.parseInt(localCoordinates[4]);
+
+		
+		return true;
 	}
 
 	// Parse the arguments string to an asssociative array name=>type
@@ -51,7 +70,6 @@ class Class
 		methodsString = Class.normalizeString(methodsString, true, false, true, true, true, true);
 		// Split the string to reveal each methods
 		String[] methodsArray = methodsString.split("\n");
-		System.out.println(methodsArray[2]);
 		ArrayList<MethodStructure> localMethods = new ArrayList<>();
 		for(String method : methodsArray){
 			String[] arrayMethod = method.split(":");

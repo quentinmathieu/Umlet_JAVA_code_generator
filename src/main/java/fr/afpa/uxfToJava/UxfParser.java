@@ -20,6 +20,7 @@ class UxfParser
 {
 	private Document parsedFile;
 	private ArrayList<Class> classes = new ArrayList<>();
+	// private ArrayList<Relation> ralations= new ArrayList<>(); // to be coded
 
 	public ArrayList<Class> getClasses() {
 		return this.classes;
@@ -43,20 +44,39 @@ class UxfParser
 
 
 
-    // create each class 
+    // create each class from UML to JAVA
 	public void createClass(Node node) {
-		
-		if ("panel_attributes".equals(node.getNodeName()) && node.getTextContent().contains("--")){
-			String[] arrayContent = node.getTextContent().split("--");
-			Class classToCreate = new Class(arrayContent[0], arrayContent[1], arrayContent[2], this);
-			String newClassContent = "class "+classToCreate.getName()+"{\n";
-			newClassContent += classToCreate.createAttributes();
-			newClassContent += classToCreate.createConstruct();
-			newClassContent += classToCreate.createGettersAndSetters();
-			newClassContent += classToCreate.createMethods();
+		String coordinates = "";
+		String additionalAttributes = "";
 
-			newClassContent += "}\n";
-			createOrEditFile(classToCreate.getName()+".java", newClassContent);
+		// get coordinates and/or arrows coordinates destination of each element
+		if ("element".equals(node.getNodeName()) ){
+			if ("UMLClass".equals(node.getChildNodes().item(1).getTextContent())){
+				Node currentNode = node.getChildNodes().item(5); 
+				coordinates = node.getChildNodes().item(3).getTextContent();
+				
+				String[] arrayContent = currentNode.getTextContent().split("--");
+				Class classToCreate = new Class(arrayContent[0], arrayContent[1], arrayContent[2], this, coordinates);
+				StringBuilder newClassContent = new StringBuilder();
+				newClassContent.append("class "+classToCreate.getName()+"{\n");
+				newClassContent.append(classToCreate.createAttributes());
+				newClassContent.append(classToCreate.createConstruct());
+				newClassContent.append(classToCreate.createGettersAndSetters());
+				newClassContent.append(classToCreate.createMethods());
+	
+				newClassContent.append("}\n");
+				createOrEditFile(classToCreate.getName()+".java", newClassContent.toString());
+			}
+			// additionalAttributes = node.getChildNodes().item(7).getTextContent();
+		}
+		
+
+		if ("panel_attributes".equals(node.getNodeName())&& node.getTextContent().contains("lt=")){
+			String[] arrayContent = node.getTextContent().replace("\n\n", "\n").split("\n");
+			if (node.getTextContent().contains("m1=")){
+				System.out.println(arrayContent[1].split("\\..")[1]);
+			}
+
 		}
 
 		NodeList nodeList = node.getChildNodes();

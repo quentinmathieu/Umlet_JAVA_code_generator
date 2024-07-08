@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>36</x>
+      <y>18</y>
+      <w>342</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>UxfParser
+--
+-parsedFile: Document
+-classes: ArrayList&lt;Class&gt;
+--
+createClass(node: node): void
+createOrEditFile(name: String, content: String): boolean
+parseFile(filename: String): Document
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>36</x>
+      <y>342</y>
+      <w>423</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>Class
+--
+-name: String
+-methods: ArrayList&lt;Class&gt;
+-attributesNameType: Map&lt;String, String&gt;
+-uxfParser: UxfParser
+--
++parseAttributes (attributesString: String): Map&lt;String, String&gt;		
++parseAttributes (methodsString: String): ArrayList&lt;MethodStructure&gt;		
++normalizeString(str: String, whitespace: boolean, linbreak: boolean, slash: boolean, underscore: boolean, tab: boolean, plus: boolean): String
++toPascalCase(str: String): String
++createGettersAndSetters(): String
++createMethods(): String
++createConstruct(): String
++createAttributes(): String
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>180</y>
+      <w>108</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1..1
+aaaaaa &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>576</x>
+      <y>117</y>
+      <w>423</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>MethodStructure
+--
+-name: String
+-type: String
+-argumentsNameType: Map&lt;String, String&gt;
+--
+
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>333</y>
+      <w>324</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..1
+m2=0..n
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;150.0;340.0;10.0</additional_attributes>
+  </element>
+</diagram>
