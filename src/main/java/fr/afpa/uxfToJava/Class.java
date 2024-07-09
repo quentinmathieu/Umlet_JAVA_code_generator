@@ -15,6 +15,37 @@ class Class
 	private Integer width;
 	private Integer height;
 
+	public Integer getXPos() {
+		return this.xPos;
+	}
+
+	public void setXPos(Integer xPos) {
+		this.xPos = xPos;
+	}
+
+	public Integer getYPos() {
+		return this.yPos;
+	}
+
+	public void setYPos(Integer yPos) {
+		this.yPos = yPos;
+	}
+
+	public Integer getWidth() {
+		return this.width;
+	}
+
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	public Integer getHeight() {
+		return this.height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
 
 	public UxfParser getUxfParser() {
 		return this.uxfParser;
@@ -34,9 +65,11 @@ class Class
 		this.attributesNameType = this.parseAttributes(attributes);
 		this.uxfParser = uxfParser;
 		this.parseCoordinates(coordinatesString);
-		uxfParser.getClasses().add(this);
+		uxfParser.addClass(this);
 	}
 
+
+	// parse coordinate from string to to x / y / width / height
 	private boolean parseCoordinates(String coordinatesString){
 
 		String[] localCoordinates = coordinatesString.replace(" ", "").split("\n");
@@ -140,8 +173,8 @@ class Class
 	public String createGettersAndSetters(){
 		StringBuilder result = new StringBuilder("\n\t//--------------getters & setters--------------\\\\\n");
 		for(var attribute : this.attributesNameType.entrySet()){
-			result.append("\tprivate "+attribute.getValue()+" get" + Class.toPascalCase(attribute.getKey()) + "(){\n\t\t return this."+attribute.getKey()+";\n\t}\n\n");
-			result.append("\tprivate void set" + Class.toPascalCase(attribute.getKey()) + " (" +attribute.getValue()+ " " +attribute.getKey() +"){\n\t\tthis."+attribute.getKey()+" = "+attribute.getKey()+";\n\t}\n\n");
+			result.append("\tpublic "+attribute.getValue()+" get" + Class.toPascalCase(attribute.getKey()) + "(){\n\t\t return this."+attribute.getKey()+";\n\t}\n\n");
+			result.append("\tpublic void set" + Class.toPascalCase(attribute.getKey()) + " (" +attribute.getValue()+ " " +attribute.getKey() +"){\n\t\tthis."+attribute.getKey()+" = "+attribute.getKey()+";\n\t}\n\n");
 		}
 		return result.toString();
 	}

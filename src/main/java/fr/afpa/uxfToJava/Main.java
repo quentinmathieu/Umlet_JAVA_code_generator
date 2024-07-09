@@ -14,7 +14,7 @@ class Main
 		System.out.println("\n----- UXF parser -----");
 		
 		
-		new UxfParser("uxfForTest/uxfParser.uxf");
+		new UxfParser("uxfForTest/uxfParser_copy.uxf");
 	}
 }
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>9</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>36</x>
-      <y>18</y>
-      <w>342</w>
-      <h>171</h>
+      <x>35</x>
+      <y>70</y>
+      <w>266</w>
+      <h>133</h>
     </coordinates>
     <panel_attributes>UxfParser
 --
@@ -23,10 +23,10 @@ parseFile(filename: String): Document
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>36</x>
-      <y>342</y>
-      <w>423</w>
-      <h>225</h>
+      <x>21</x>
+      <y>308</y>
+      <w>329</w>
+      <h>175</h>
     </coordinates>
     <panel_attributes>Class
 --
@@ -49,24 +49,24 @@ parseFile(filename: String): Document
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
-      <y>180</y>
-      <w>108</w>
-      <h>180</h>
+      <x>161</x>
+      <y>196</y>
+      <w>70</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
 m2=1..1
 aaaaaa &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;20.0;160.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>576</x>
-      <y>117</y>
-      <w>423</w>
-      <h>225</h>
+      <x>434</x>
+      <y>322</y>
+      <w>329</w>
+      <h>175</h>
     </coordinates>
     <panel_attributes>MethodStructure
 --
@@ -81,15 +81,51 @@ aaaaaa &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
-      <y>333</y>
-      <w>324</w>
-      <h>153</h>
+      <x>343</x>
+      <y>392</y>
+      <w>105</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..1
 m2=0..n
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;150.0;340.0;10.0</additional_attributes>
+    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>406</x>
+      <y>63</y>
+      <w>329</w>
+      <h>175</h>
+    </coordinates>
+    <panel_attributes>Relation
+--
+-arrow: String
+-xPos: Integer
+-yPos: Integer
+-width: Integer
+-height: Integer
+-uxfParser: UxfParser
+--
+parseCoordinates: boolean
+parseWidthHeight: boolean
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>112</y>
+      <w>126</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..1
+m2=0..n
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
   </element>
 </diagram>

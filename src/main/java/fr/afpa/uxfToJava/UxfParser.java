@@ -1,6 +1,6 @@
 package fr.afpa.uxftojava;
 
-import java.io.File;  // Import the File class
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,9 +18,26 @@ import org.xml.sax.SAXException;
 
 class UxfParser
 {
+    private double zoom = 1; 
 	private Document parsedFile;
 	private ArrayList<Class> classes = new ArrayList<>();
-	// private ArrayList<Relation> ralations= new ArrayList<>(); // to be coded
+	private ArrayList<Relation> relations = new ArrayList<>();
+
+	public double getZoom() {
+		return this.zoom;
+	}
+
+	public void setZoom(double zoom) {
+		this.zoom = zoom;
+	}
+
+	public ArrayList<Relation> getRelations() {
+		return this.relations;
+	}
+
+	public void setRelations(ArrayList<Relation> relations) {
+		this.relations = relations;
+	}
 
 	public ArrayList<Class> getClasses() {
 		return this.classes;
@@ -42,6 +59,16 @@ class UxfParser
 			this.parsedFile = parseFile(parsedFile);
 	}
 
+	public boolean addRelation(Relation relation){
+		this.relations.add(relation);
+		return true;
+	}
+
+	public boolean addClass(Class newClass){
+		this.classes.add(newClass);
+		return true;
+	}
+
 
 
     // create each class from UML to JAVA
@@ -49,7 +76,10 @@ class UxfParser
 		String coordinates = "";
 		String additionalAttributes = "";
 
-		// get coordinates and/or arrows coordinates destination of each element
+		if ("zoom_level".equals(node.getNodeName()) ){
+			this.zoom = Double.parseDouble(node.getTextContent())/10;
+		}
+			// get coordinates and/or arrows coordinates destination of each element
 		if ("element".equals(node.getNodeName()) ){
 			if ("UMLClass".equals(node.getChildNodes().item(1).getTextContent())){
 				Node currentNode = node.getChildNodes().item(5); 
@@ -66,18 +96,30 @@ class UxfParser
 	
 				newClassContent.append("}\n");
 				createOrEditFile(classToCreate.getName()+".java", newClassContent.toString());
+
 			}
-			// additionalAttributes = node.getChildNodes().item(7).getTextContent();
+			else if ("Relation".equals(node.getChildNodes().item(1).getTextContent()) && node.getChildNodes().item(5).getTextContent().contains("lt=")){
+				coordinates = node.getChildNodes().item(3).getTextContent();
+				additionalAttributes = node.getChildNodes().item(7).getTextContent();
+				Relation newRelation = new Relation(coordinates, additionalAttributes, this);
+				System.out.println(newRelation.getYPos() + "/"+ newRelation.getXPos() + "/"+ newRelation.getWidth() + "/"+ newRelation.getHeight());
+				Node contentNode = node.getChildNodes().item(5);
+				String[] arrayContent = contentNode.getTextContent().replace("\n\n", "\n").split("\n");
+				if (contentNode.getTextContent().contains("m1=")){
+					// System.out.println(arrayContent[1].split("\\..")[1]);
+				}
+
+				Class stClass = this.classes.getFirst();
+				System.out.println("["+stClass.getXPos()+ ",-" +stClass.getYPos() + "], "+ "["+stClass.getXPos()+ ",-" +(stClass.getYPos()+stClass.getHeight())+"], "+ "["+(stClass.getXPos()+ stClass.getWidth())+",-" +stClass.getYPos() + "], "+ "["+(stClass.getXPos()+ stClass.getWidth())+",-" + (stClass.getYPos()+stClass.getHeight()) + "]");
+				
+				Relation stRelation= this.relations.getFirst();
+				System.out.println(stRelation.getXPos()+ " ,  -" +stRelation.getYPos()+ " // " +(stRelation.getXPos()+stRelation.getWidth() )+ " , -"+ (stRelation.getYPos()+stRelation.getHeight()));
+	
+			}
 		}
 		
 
-		if ("panel_attributes".equals(node.getNodeName())&& node.getTextContent().contains("lt=")){
-			String[] arrayContent = node.getTextContent().replace("\n\n", "\n").split("\n");
-			if (node.getTextContent().contains("m1=")){
-				System.out.println(arrayContent[1].split("\\..")[1]);
-			}
-
-		}
+		
 
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
