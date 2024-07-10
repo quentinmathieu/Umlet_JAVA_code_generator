@@ -86,7 +86,7 @@ class UxfParser
 	public boolean makeRelations(){
 		// iterate on each class for each relation to detect relations
 		for (Relation relation : this.relations) {
-			System.out.println("Relation POS:\n"+relation.getXPos() + " / " + relation.getYPos() + " => "+ relation.calcEndXPos()+" / "+relation.calcEndYPos());
+			System.out.println("Relation POS:\n["+relation.getXPos() + "," + relation.getYPos() + "] => ["+ relation.calcEndXPos()+","+relation.calcEndYPos()+"]");
 			StringBuilder strR = new StringBuilder();
 			for (Class classRel : this.classes) {
 				// if the 1st point of the relation arrow is in the UMLclass
@@ -117,6 +117,7 @@ class UxfParser
 		return true;
 	}
 
+	// append each componant of the class file and create the java file
 	public boolean generateFiles(){
 		for (Class classToJava : this.classes) {
 			StringBuilder newClassContent = new StringBuilder();
@@ -148,17 +149,12 @@ class UxfParser
 				coordinates = node.getChildNodes().item(3).getTextContent();
 				
 				String[] arrayContent = currentNode.getTextContent().split("--");
-				Class classToCreate = new Class(arrayContent[0], arrayContent[1], arrayContent[2], this, coordinates);
+				new Class(arrayContent[0], arrayContent[1], arrayContent[2], this, coordinates);
 			}
 			else if ("Relation".equals(node.getChildNodes().item(1).getTextContent()) && node.getChildNodes().item(5).getTextContent().contains("lt=")){
 				coordinates = node.getChildNodes().item(3).getTextContent();
 				additionalAttributes = node.getChildNodes().item(7).getTextContent();
-				Relation newRelation = new Relation(coordinates, additionalAttributes, this);
-				Node contentNode = node.getChildNodes().item(5);
-				String[] arrayContent = contentNode.getTextContent().replace("\n\n", "\n").split("\n");
-				if (contentNode.getTextContent().contains("m1=")){
-					// System.out.println(arrayContent[1].split("\\..")[1]);
-				}
+				new Relation(coordinates, additionalAttributes, this, node.getChildNodes().item(5).getTextContent());
 	
 			}
 		}

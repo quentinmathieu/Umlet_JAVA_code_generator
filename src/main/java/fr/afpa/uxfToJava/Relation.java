@@ -1,7 +1,9 @@
 package fr.afpa.uxftojava;
 
 class Relation {
-	private String arrow;
+	private String lt;
+	private String m1 = null;
+	private String m2 = null;
 	private Integer xPos;
 	private Integer yPos;
 	private Integer width;
@@ -14,11 +16,22 @@ class Relation {
 	private Class endClass = null;
 
 	// --------------construct--------------\\
-	public Relation(String coordinatesString, String widthHeightString, UxfParser uxfParser) {
+	public Relation(String coordinatesString, String widthHeightString, UxfParser uxfParser, String arrow) {
 		this.uxfParser = uxfParser;
 		this.parseCoordinates(coordinatesString);
 		this.parseWidthHeight(widthHeightString);
+		this.parseArrow(arrow);
 		this.uxfParser.addRelation(this);
+	}
+
+	// Get arrow infos : get the arrow type and the cardinality if there is one
+	public boolean parseArrow(String arrow){
+		if (arrow.contains("m1=") && arrow.contains("m2=")){
+			this.m1= arrow.split("\n")[1].split("\\..")[1];
+			this.m2= arrow.split("\n")[2].split("\\..")[1];
+		}
+		this.lt = arrow.split("\n")[0].split("\\=")[1];
+		return true;
 	}
 
 	// parse coordinate from string to to x / y / width / height
@@ -58,6 +71,30 @@ class Relation {
 	// --------------getters & setters--------------\\
 
 
+	public String getLt() {
+		return this.lt;
+	}
+
+	public void setLt(String lt) {
+		this.lt = lt;
+	}
+
+	public String getM1() {
+		return this.m1;
+	}
+
+	public void setM1(String m1) {
+		this.m1 = m1;
+	}
+
+	public String getM2() {
+		return this.m2;
+	}
+
+	public void setM2(String m2) {
+		this.m2 = m2;
+	}
+
 	public Class getStartClass() {
 		return this.startClass;
 	}
@@ -94,14 +131,6 @@ class Relation {
 
 	public void setYPos(Integer yPos) {
 		this.yPos = yPos;
-	}
-
-	public String getArrow() {
-		return this.arrow;
-	}
-
-	public void setArrow(String arrow) {
-		this.arrow = arrow;
 	}
 
 	public Integer getWidth() {
