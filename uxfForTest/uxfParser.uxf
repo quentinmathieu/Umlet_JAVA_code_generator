@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>7</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>35</x>
-      <y>70</y>
-      <w>266</w>
-      <h>133</h>
+      <x>20</x>
+      <y>10</y>
+      <w>380</w>
+      <h>190</h>
     </coordinates>
     <panel_attributes>UxfParser
 --
@@ -23,10 +23,10 @@ parseFile(filename: String): Document
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>21</x>
-      <y>308</y>
-      <w>329</w>
-      <h>175</h>
+      <x>0</x>
+      <y>350</y>
+      <w>470</w>
+      <h>250</h>
     </coordinates>
     <panel_attributes>Class
 --
@@ -49,24 +49,24 @@ parseFile(filename: String): Document
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>161</x>
-      <y>196</y>
-      <w>70</w>
-      <h>126</h>
+      <x>190</x>
+      <y>190</y>
+      <w>90</w>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
 m2=1..1
 aaaaaa &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;20.0;160.0</additional_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>434</x>
-      <y>322</y>
-      <w>329</w>
-      <h>175</h>
+      <x>590</x>
+      <y>370</y>
+      <w>470</w>
+      <h>250</h>
     </coordinates>
     <panel_attributes>MethodStructure
 --
@@ -81,10 +81,10 @@ aaaaaa &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>343</x>
-      <y>392</y>
-      <w>105</w>
-      <h>35</h>
+      <x>460</x>
+      <y>470</y>
+      <w>150</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..1
@@ -95,10 +95,10 @@ has &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>406</x>
-      <y>63</y>
-      <w>329</w>
-      <h>175</h>
+      <x>550</x>
+      <y>0</y>
+      <w>470</w>
+      <h>250</h>
     </coordinates>
     <panel_attributes>Relation
 --
@@ -117,15 +117,15 @@ parseWidthHeight: boolean
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>294</x>
-      <y>112</y>
-      <w>126</w>
-      <h>35</h>
+      <x>390</x>
+      <y>90</y>
+      <w>180</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..1
 m2=0..n
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
+    <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>

@@ -23,6 +23,19 @@ class UxfParser
 	private ArrayList<Class> classes = new ArrayList<>();
 	private ArrayList<Relation> relations = new ArrayList<>();
 
+
+
+	public Document parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
+
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+		Document document = docBuilder.parse(new File(fileName));
+		this.createClass(document.getDocumentElement());
+		this.makeRelations();
+		this.generateFiles();
+    	return document;
+	}
+
 	public double getZoom() {
 		return this.zoom;
 	}
@@ -69,7 +82,56 @@ class UxfParser
 		return true;
 	}
 
+	// create relations between classes
+	public boolean makeRelations(){
+		// iterate on each class for each relation to detect relations
+		for (Relation relation : this.relations) {
+			System.out.println("Relation POS:\n"+relation.getXPos() + " / " + relation.getYPos() + " => "+ relation.calcEndXPos()+" / "+relation.calcEndYPos());
+			StringBuilder strR = new StringBuilder();
+			for (Class classRel : this.classes) {
+				// if the 1st point of the relation arrow is in the UMLclass
+				if ((relation.getXPos() >= classRel.getXPos() && relation.getXPos() <= classRel.calcEndXPos()) && (relation.getYPos() >= classRel.getYPos() && relation.getYPos() <= classRel.calcEndYPos())){
+					strR.append(classRel.getName());
+					strR.append((relation.getInvert()? "<--": "-->"));
+					if (relation.getInvert()){
+						relation.setEndClass(classRel);
+					}
+					else{
+						relation.setStartClass(classRel);
+					}
+				}
+				
+				// if the last point of the relation arrow is in the UMLclass
+				else if ((relation.calcEndXPos() >= classRel.getXPos() && relation.calcEndXPos() <= classRel.calcEndXPos()) && (relation.calcEndYPos() >= classRel.getYPos() && relation.calcEndYPos() <= classRel.calcEndYPos())){
+					if (relation.getInvert()){
+						relation.setStartClass(classRel);
+					}
+					else{
+						relation.setEndClass(classRel);
+					}
+					strR.append(classRel.getName()+"\n");
+				}
+			}
+			System.out.println(strR.toString());
+		}
+		return true;
+	}
 
+	public boolean generateFiles(){
+		for (Class classToJava : this.classes) {
+			StringBuilder newClassContent = new StringBuilder();
+			newClassContent.append("class "+classToJava.getName()+"{\n");
+			newClassContent.append(classToJava.createAttributes());
+			newClassContent.append(classToJava.createConstruct());
+			newClassContent.append(classToJava.createGettersAndSetters());
+			newClassContent.append(classToJava.createMethods());
+			newClassContent.append("}\n");
+			createOrEditFile(classToJava.getName()+".java", newClassContent.toString());
+		}
+		
+
+		return true;
+	}
 
     // create each class from UML to JAVA
 	public void createClass(Node node) {
@@ -87,39 +149,19 @@ class UxfParser
 				
 				String[] arrayContent = currentNode.getTextContent().split("--");
 				Class classToCreate = new Class(arrayContent[0], arrayContent[1], arrayContent[2], this, coordinates);
-				StringBuilder newClassContent = new StringBuilder();
-				newClassContent.append("class "+classToCreate.getName()+"{\n");
-				newClassContent.append(classToCreate.createAttributes());
-				newClassContent.append(classToCreate.createConstruct());
-				newClassContent.append(classToCreate.createGettersAndSetters());
-				newClassContent.append(classToCreate.createMethods());
-	
-				newClassContent.append("}\n");
-				createOrEditFile(classToCreate.getName()+".java", newClassContent.toString());
-
 			}
 			else if ("Relation".equals(node.getChildNodes().item(1).getTextContent()) && node.getChildNodes().item(5).getTextContent().contains("lt=")){
 				coordinates = node.getChildNodes().item(3).getTextContent();
 				additionalAttributes = node.getChildNodes().item(7).getTextContent();
 				Relation newRelation = new Relation(coordinates, additionalAttributes, this);
-				System.out.println(newRelation.getYPos() + "/"+ newRelation.getXPos() + "/"+ newRelation.getWidth() + "/"+ newRelation.getHeight());
 				Node contentNode = node.getChildNodes().item(5);
 				String[] arrayContent = contentNode.getTextContent().replace("\n\n", "\n").split("\n");
 				if (contentNode.getTextContent().contains("m1=")){
 					// System.out.println(arrayContent[1].split("\\..")[1]);
 				}
-
-				Class stClass = this.classes.getFirst();
-				System.out.println("["+stClass.getXPos()+ ",-" +stClass.getYPos() + "], "+ "["+stClass.getXPos()+ ",-" +(stClass.getYPos()+stClass.getHeight())+"], "+ "["+(stClass.getXPos()+ stClass.getWidth())+",-" +stClass.getYPos() + "], "+ "["+(stClass.getXPos()+ stClass.getWidth())+",-" + (stClass.getYPos()+stClass.getHeight()) + "]");
-				
-				Relation stRelation= this.relations.getFirst();
-				System.out.println(stRelation.getXPos()+ " ,  -" +stRelation.getYPos()+ " // " +(stRelation.getXPos()+stRelation.getWidth() )+ " , -"+ (stRelation.getYPos()+stRelation.getHeight()));
 	
 			}
 		}
-		
-
-		
 
 		NodeList nodeList = node.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -156,13 +198,5 @@ class UxfParser
 		return this.classes.toString();
 	}
 
-	public Document parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
-
-		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-		Document document = docBuilder.parse(new File(fileName));
-		this.createClass(document.getDocumentElement());
-    	return document;	
-	}
 
 }

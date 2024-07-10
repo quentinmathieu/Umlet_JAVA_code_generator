@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>0</y>
+      <y>40</y>
       <w>760</w>
       <h>380</h>
     </coordinates>
@@ -24,14 +24,14 @@ parseFile(filename: String): Document
     <id>Relation</id>
     <coordinates>
       <x>740</x>
-      <y>140</y>
-      <w>520</w>
+      <y>160</y>
+      <w>480</w>
       <h>100</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=0..n
+m1=1..n
 m2=1..1
 aaaaaa &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
   </element>
 </diagram>

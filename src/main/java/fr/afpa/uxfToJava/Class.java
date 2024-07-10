@@ -59,6 +59,14 @@ class Class
 		this.name = "Test";
 	}
 
+	public Integer calcEndXPos(){
+		return this.getWidth()+this.getXPos();
+	}
+	
+	public Integer calcEndYPos(){
+		return this.getHeight()+this.getYPos();
+	}
+
 	public Class(String name, String attributes,String methods, UxfParser uxfParser, String coordinatesString) {
 		this.name = this.normalizeString(name);
 		this.methods = this.parseMethods(methods);
