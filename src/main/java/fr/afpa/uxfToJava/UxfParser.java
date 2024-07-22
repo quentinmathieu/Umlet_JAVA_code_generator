@@ -32,6 +32,7 @@ class UxfParser
 		Document document = docBuilder.parse(new File(fileName));
 		this.createClass(document.getDocumentElement());
 		this.makeRelations();
+		this.linkObjectViaRelations();
 		this.generateFiles();
     	return document;
 	}
@@ -166,6 +167,13 @@ class UxfParser
 				createClass(currentNode);
 			}
 		}
+	}
+
+	private boolean linkObjectViaRelations(){
+		for (Relation relation : this.relations) {
+			relation.linkObjects();
+		}
+		return true;
 	}
 
 	private boolean createOrEditFile(String name, String content){

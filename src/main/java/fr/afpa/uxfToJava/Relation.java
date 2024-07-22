@@ -60,6 +60,32 @@ class Relation {
 		return true;
 	}
 
+	public boolean linkObjects(){
+		// set objects' extends & foreign attributes of the relation
+		if(!this.lt.contains("<") && !this.lt.contains(">")){
+			switch (m1) {
+				case "1":
+					if("n".equals(m2)){
+						System.out.println(startClass.getName() + " 1.n " + endClass.getName());
+					}
+					break;
+			
+				case "n":
+					if("1".equals(m2)){
+						System.out.println(startClass.getName() + " n.1 " + endClass.getName());
+					}
+					else if ("n".equals(m2)){
+						System.out.println(startClass.getName() + " n.n " + endClass.getName());
+					}
+					break;
+				
+				default:
+					break;
+			}
+		}
+		return true;
+	}
+
 	public Integer calcEndXPos() {
 		return this.getWidth() + this.getXPos();
 	}
