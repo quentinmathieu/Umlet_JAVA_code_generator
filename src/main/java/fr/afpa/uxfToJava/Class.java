@@ -3,6 +3,7 @@ package fr.afpa.uxftojava;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 class Class
 {
@@ -180,7 +181,7 @@ class Class
 
 	public String createGettersAndSetters(){
 		StringBuilder result = new StringBuilder("\n\t//--------------getters & setters--------------\\\\\n");
-		for(var attribute : this.attributesNameType.entrySet()){
+		for(Entry<String, String> attribute : this.attributesNameType.entrySet()){
 			result.append("\tpublic "+attribute.getValue()+" get" + Class.toPascalCase(attribute.getKey()) + "(){\n\t\t return this."+attribute.getKey()+";\n\t}\n\n");
 			result.append("\tpublic void set" + Class.toPascalCase(attribute.getKey()) + " (" +attribute.getValue()+ " " +attribute.getKey() +"){\n\t\tthis."+attribute.getKey()+" = "+attribute.getKey()+";\n\t}\n\n");
 		}
@@ -189,7 +190,7 @@ class Class
 
 	public String createAttributes(){
 		StringBuilder result = new StringBuilder();
-		for(var attributeNameType : this.attributesNameType.entrySet()){
+		for(Entry<String, String> attributeNameType : this.attributesNameType.entrySet()){
 				result.append("\tprivate "+ attributeNameType.getValue() +" "+attributeNameType.getKey()+";\n");
 
 				
@@ -206,7 +207,7 @@ class Class
 				if (method.getArgumentsNameType().size()>0){
 					args .append("(");
 					int count = 0;
-					for (var argNameType : method.getArgumentsNameType().entrySet()){
+					for (Entry<String, String> argNameType : method.getArgumentsNameType().entrySet()){
 						String begin = (count==0) ? "" : ", ";
 						args.append(begin + argNameType.getValue()+ " " + argNameType.getKey());
 						count++;
@@ -226,7 +227,7 @@ class Class
 
 		// create construct arguments
 		result.append("\n\t//--------------construct--------------\\\\\n\tpublic "+ name + " (");
-		for(var attribute : this.attributesNameType.entrySet()){
+		for(Entry<String, String> attribute : this.attributesNameType.entrySet()){
 			result.append(attribute.getValue()+ " " +attribute.getKey() + ", ");
 			
 		}
@@ -236,7 +237,7 @@ class Class
 		result.append("){\n");
 
 		// affect value to each attributes
-		for(var attribute : this.attributesNameType.entrySet()){
+		for(Entry<String, String> attribute : this.attributesNameType.entrySet()){
 			
 				result.append("\t\tthis." +attribute.getKey().replace(" ", "") + " = "+ attribute.getKey() + ";\n");
 		}
