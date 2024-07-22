@@ -66,16 +66,19 @@ class Relation {
 			switch (m1) {
 				case "1":
 					if("n".equals(m2)){
-						System.out.println(startClass.getName() + " 1.n " + endClass.getName());
+						System.out.println(startClass.getName() + " a n " + endClass.getName());
+						System.out.println(endClass.getName() + " a 1 " +  startClass.getName());
 					}
 					break;
 			
 				case "n":
 					if("1".equals(m2)){
-						System.out.println(startClass.getName() + " n.1 " + endClass.getName());
+						System.out.println(startClass.getName() + " a 1 " + endClass.getName());
+						System.out.println(endClass.getName() + " a n " +  startClass.getName());
 					}
 					else if ("n".equals(m2)){
-						System.out.println(startClass.getName() + " n.n " + endClass.getName());
+						System.out.println(startClass.getName() + " a n " + endClass.getName());
+						System.out.println(endClass.getName() + " a n " +  startClass.getName());
 					}
 					break;
 				
