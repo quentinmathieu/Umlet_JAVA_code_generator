@@ -6,9 +6,9 @@
 
   <groupId>fr.afpa</groupId>
   <artifactId>uxftojava</artifactId>
-  <version>0.1-SNAPSHOT</version>
-
-  <name>java-exercices</name>
+  <packaging>jar</packaging>
+  <version>0.1</version>
+  <name>uxftojava</name>
   <url>http://afpa.fr</url>
 
   <properties>

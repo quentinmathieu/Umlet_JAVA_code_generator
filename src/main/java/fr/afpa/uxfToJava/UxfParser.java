@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 
 
-class UxfParser
+public class UxfParser
 {
     private double zoom = 1; 
 	private Document parsedFile;
@@ -177,6 +177,7 @@ class UxfParser
 	}
 
 	private boolean createOrEditFile(String name, String content){
+		name = "../" + name;
 		try {
 			File myObj = new File(name);
 			if (myObj.createNewFile()) {

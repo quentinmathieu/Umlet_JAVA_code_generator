@@ -15,3 +15,6 @@
 * prompt to ask the user wich setters / getters
 * prompt to ask the user carnality expectations
 * dependencies
+
+## compile lib to jar
+* configure classpath
