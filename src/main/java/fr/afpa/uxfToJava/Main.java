@@ -12,9 +12,9 @@ class Main
 	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException
 	{
 		System.out.println("\n----- UXF parser -----");
-		
-		
-		new UxfParser("uxfForTest/uxfParser.uxf");
+
+		UxfParser uxfParser = new UxfParser();
+		uxfParser.parseFile("uxfForTest/uxfParser.uxf");
 	}
 }
 

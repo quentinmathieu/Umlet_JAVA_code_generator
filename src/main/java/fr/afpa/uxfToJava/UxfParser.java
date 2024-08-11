@@ -25,7 +25,7 @@ public class UxfParser
 
 
 
-	public Document parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
+	public ArrayList<String> parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
 
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -33,8 +33,7 @@ public class UxfParser
 		this.createClass(document.getDocumentElement());
 		this.makeRelations();
 		this.linkObjectViaRelations();
-		this.generateFiles();
-    	return document;
+		return this.generateFiles();
 	}
 
 	public double getZoom() {
@@ -69,9 +68,6 @@ public class UxfParser
 		this.parsedFile = parsedFile;
 	}
 
-	public UxfParser(String parsedFile) throws IOException, ParserConfigurationException, SAXException {
-			this.parsedFile = parseFile(parsedFile);
-	}
 
 	public boolean addRelation(Relation relation){
 		this.relations.add(relation);
@@ -119,7 +115,9 @@ public class UxfParser
 	}
 
 	// append each componant of the class file and create the java file
-	public boolean generateFiles(){
+	public ArrayList<String> generateFiles(){
+		ArrayList<String> paths = new ArrayList<>(); 
+
 		for (Class classToJava : this.classes) {
 			StringBuilder newClassContent = new StringBuilder();
 			newClassContent.append("class "+classToJava.getName()+"{\n");
@@ -129,10 +127,11 @@ public class UxfParser
 			newClassContent.append(classToJava.createMethods());
 			newClassContent.append("}\n");
 			createOrEditFile(classToJava.getName()+".java", newClassContent.toString());
+			paths.add(classToJava.getName()+".java");
 		}
 		
 
-		return true;
+		return paths;
 	}
 
     // create each class from UML to JAVA
@@ -177,7 +176,7 @@ public class UxfParser
 	}
 
 	private boolean createOrEditFile(String name, String content){
-		name = "../" + name;
+		// name = "../" + name;
 		try {
 			File myObj = new File(name);
 			if (myObj.createNewFile()) {
