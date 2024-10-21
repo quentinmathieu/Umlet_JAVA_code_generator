@@ -56,10 +56,6 @@ class Class
 		this.uxfParser = uxfParser;
 	}
 
-	public Class(){
-		this.name = "Test";
-	}
-
 	public Integer calcEndXPos(){
 		return this.getWidth()+this.getXPos();
 	}

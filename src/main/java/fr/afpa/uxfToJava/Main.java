@@ -13,8 +13,7 @@ class Main
 	{
 		System.out.println("\n----- UXF parser -----");
 
-		UxfParser uxfParser = new UxfParser();
-		uxfParser.parseFile("uxfForTest/uxfParser.uxf");
+		new UxfParser("uxfForTest/uxfParser.uxf");
 	}
 }
 

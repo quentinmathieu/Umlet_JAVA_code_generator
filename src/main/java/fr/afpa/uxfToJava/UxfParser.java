@@ -24,8 +24,11 @@ public class UxfParser
 	private ArrayList<Relation> relations = new ArrayList<>();
 
 
+	public UxfParser(String fileName) throws IOException, ParserConfigurationException, SAXException{
+		this.parseFile(fileName);
+	}
 
-	public ArrayList<String> parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
+	private ArrayList<String> parseFile(String fileName) throws IOException, ParserConfigurationException, SAXException {
 
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
