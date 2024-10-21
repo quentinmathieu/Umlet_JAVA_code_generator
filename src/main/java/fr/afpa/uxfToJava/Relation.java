@@ -47,12 +47,12 @@ class Relation {
 	public boolean parseWidthHeight(String widthHeightString) {
 		String[] localWidthHeight = widthHeightString.replace(" ", "").split(";");
 
-		// arrow coordinates : x1;y1;x2;y2 (relative to the xPos yPos) to width a height
+		// arrow coordinates : x1;y1;x2;y2 (relative to the xPos yPos) to width & height
 		this.width = Math.round(Float.parseFloat(localWidthHeight[2]))
 				- Math.round(Float.parseFloat(localWidthHeight[0]));
 		this.height = Math.round(Float.parseFloat(localWidthHeight[3]))
 				- Math.round(Float.parseFloat(localWidthHeight[1]));
-		invert = (this.width < 0 || this.height < 0) ? true : false;
+		invert = (this.width < 0 || this.height < 0);
 		this.width = (this.width < 0) ? (-this.width) + 20 : this.width + 20;
 		this.height = (this.height < 0) ? (-this.height) + 20 : this.height + 20;
 		this.width = (int) ((double) this.width * (uxfParser.getZoom()));
@@ -61,7 +61,7 @@ class Relation {
 	}
 
 	public boolean linkObjects(){
-		// set objects' extends & foreign attributes of the relation
+		// set objects' extends & foreign attributes of relations
 		if(!this.lt.contains("<") && !this.lt.contains(">")){
 			switch (m1) {
 				case "1":

@@ -8,8 +8,8 @@
 * ~~create class getters & setters~~
 * ~~create multiple classes at once~~
 * ~~add args for methods~~
+* ~~create project~~
 * **create rel attributes (cardinality)**
-* create project
 
 ## Advanced
 * prompt to ask the user wich setters / getters
